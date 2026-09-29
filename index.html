@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SANSAN.RED · 教学数字化创新互动课件矩阵</title>
+  <meta name="description" content="用前沿生成式 AI 与 3D 沉浸交互重构中小学教育内容。手机与电脑点开即用，纯网页零安装。">
+  <style>
+    :root {
+      --bg: #0c0d0e;
+      --card-bg: rgba(24, 26, 29, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(229, 57, 53, 0.4);
+      --text-main: #f5f5f7;
+      --text-sub: #8e8e93;
+      --accent: #e53935;
+      --accent-glow: rgba(229, 57, 53, 0.25);
+      --tag-bg: rgba(255, 255, 255, 0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(229, 57, 53, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 40%);
+    }
+    header {
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--card-border);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      text-decoration: none;
+    }
+    .logo-badge {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+    }
+    .header-tag {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      border: 1px solid var(--card-border);
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: var(--tag-bg);
+    }
+    main {
+      flex: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 64px 24px 80px;
+      width: 100%;
+    }
+    .hero {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: #ff6b6b;
+      background: rgba(229, 57, 53, 0.1);
+      border: 1px solid rgba(229, 57, 53, 0.25);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      letter-spacing: 0.04em;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 18px;
+      background: linear-gradient(180deg, #ffffff 40%, rgba(255, 255, 255, 0.65) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-sub);
+      max-width: 640px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(16px);
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--card-border-hover), transparent);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--card-border-hover);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 30px var(--accent-glow);
+    }
+    .card:hover::before {
+      opacity: 1;
+    }
+    .card-featured {
+      border-color: rgba(229, 57, 53, 0.35);
+      background: linear-gradient(180deg, rgba(229, 57, 53, 0.08) 0%, rgba(24, 26, 29, 0.8) 100%);
+    }
+    .card-top {
+      margin-bottom: 24px;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--tag-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-sub);
+    }
+    .tag-featured {
+      background: rgba(229, 57, 53, 0.15);
+      border-color: rgba(229, 57, 53, 0.35);
+      color: #ff6b6b;
+      font-weight: 600;
+    }
+    .card h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+      color: #fff;
+    }
+    .card p {
+      font-size: 0.925rem;
+      color: var(--text-sub);
+      line-height: 1.65;
+    }
+    .card-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--card-border);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .card-action .btn-arrow {
+      color: var(--accent);
+      transition: transform 0.2s ease;
+    }
+    .card:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 0.825rem;
+      color: var(--text-sub);
+    }
+    footer p + p {
+      margin-top: 6px;
+      font-size: 0.75rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="logo">
+      <span class="logo-badge"></span>
+      SANSAN.RED
+    </a>
+    <div class="header-tag">全新数字化教学课件</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-badge">🇨🇳 国庆特辑 · 全端免安装即开即用</div>
+      <h1>沉浸式 3D 数字互动课件</h1>
+      <p>告别传统静态 PPT，用前沿 3D 数字沙盘与考点结构化解构，让经典课文在手机与电脑屏幕上鲜活重现。</p>
+    </section>
+
+    <div class="grid">
+
+      <!-- 开国大典 (主推) -->
+      <a href="/kgdd/" class="card card-featured">
+        <div class="card-top">
+          <div class="card-tags">
+            <span class="tag tag-featured">国庆重磅首推</span>
+            <span class="tag">六上第二单元</span>
+            <span class="tag">3D历史全景</span>
+          </div>
+          <h2>《开国大典》</h2>
+          <p>3D 重现 1949 年“丁字形”天安门广场。亲手按电钮升旗，54 门礼炮 28 响全景声效，阅兵特写与“点面结合”答题卡，通关即可生成专属观礼纪念卡。</p>
+        </div>
+        <div class="card-action">
+          <span>进入互动体验</span>
+          <span class="btn-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- 七律·长征 -->
+      <a href="/cz/" class="card">
+        <div class="card-top">
+          <div class="card-tags">
+            <span class="tag">3D数字沙盘</span>
+            <span class="tag">六上第二单元</span>
+            <span class="tag">万水千山</span>
+          </div>
+          <h2>《七律·长征》</h2>
+          <p>万水千山三维 GIS 数字地理沙盘。五大关隘标牌、流光航线、细浪泥丸极差滑块与金沙大渡双温张力，全端丝滑通杀，附期末速查大表。</p>
+        </div>
+        <div class="card-action">
+          <span>进入互动体验</span>
+          <span class="btn-arrow">→</span>
+        </div>
+      </a>
+
+      <!-- 少年闰土 -->
+      <a href="/runtu/" class="card">
+        <div class="card-top">
+          <div class="card-tags">
+            <span class="tag">GalGame 双主角</span>
+            <span class="tag">四幕高定手绘</span>
+            <span class="tag">深度精研</span>
+          </div>
+          <h2>《少年闰土》</h2>
+          <p>四大全屏手绘场景（瓜地刺猹、雪地捕鸟、海边拾贝、看跳鱼）。沉浸式双主角轮替对话交互，四幕递进考点梳理与好感度精析。</p>
+        </div>
+        <div class="card-action">
+          <span>进入互动体验</span>
+          <span class="btn-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 SANSAN.RED · 教学数字化创新与自媒体传播矩阵</p>
+    <p>单文件自包含零外链架构 · 手机电脑全端兼容 · 即开即用</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>统编版六年级语文上册《少年闰土》沉浸式互动课件 · 温暖治愈画卷</title>
+    <meta name="description" content="统编版小学语文六年级上册《少年闰土》沉浸式互动课件。全屏手绘治愈画卷、GalGame式双主角对话探究、深度穿插课标重难点研读与情感递进。">
+    <meta name="keywords" content="少年闰土, 鲁迅, 六年级语文, 沉浸式课件, 交互式教学, 故乡">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" type="image/png" href="assets/avatar_runtu.png">
+    <link rel="apple-touch-icon" href="assets/avatar_runtu.png">
+    <!-- Open Graph / 微信 / 社交分享卡片 -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://shaonianruntu.surge.sh/">
+    <meta property="og:title" content="《少年闰土》沉浸式互动课件 · 温暖治愈画卷">
+    <meta property="og:description" content="统编版六年级语文上册精读课文。手绘全景大画卷 + 沉浸式双主角对话 + 核心考点深度研读。">
+    <meta property="og:image" content="assets/runtu_keyframe.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="《少年闰土》沉浸式互动课件">
+    <meta name="twitter:description" content="统编版小学语文六年级上册《少年闰土》沉浸式互动课件">
+    <meta name="twitter:image" content="assets/runtu_keyframe.jpg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Space+Grotesk:wght@500;700&display=swap');
+
+        :root {
+            --paper-cream: #faf7f2;
+            --ink-primary: #1e293b;
+            --ink-secondary: #475569;
+            --accent-amber: #d97706;
+            --accent-gold: #f59e0b;
+            --highlight-badge: #b45309;
+            --pulse-glow: rgba(245, 158, 11, 0.4);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000000;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "SF Pro Text", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            user-select: none;
+        }
+
+        /* 铺满全屏主舞台 (100vw x 100vh Full-Bleed Viewport) */
+        #game-viewport {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            background: #000000;
+        }
+
+        /* 全屏背景图视窗 (支持平滑镜头推拉与摇摄) */
+        .scene-stage-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .scene-bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            filter: contrast(102%) brightness(98%);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+            transform-origin: center center;
+        }
+
+        /* 顶部悬浮微玻璃导航 */
+        .top-floating-bar {
+            position: absolute;
+            top: 18px;
+            left: 24px;
+            right: 24px;
+            height: 52px;
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 999px;
+            padding: 0 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 40;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+        }
+
+        .lesson-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .curriculum-tag {
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.45);
+            color: #fde68a;
+            font-family: "Space Grotesk", monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 9px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+        }
+
+        .lesson-title-text {
+            color: #ffffff;
+            font-family: "Noto Serif SC", STSong, serif;
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+        }
+
+        .scene-navigator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .scene-nav-pill {
+            background: transparent;
+            border: none;
+            color: #cbd5e1;
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 6px 15px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .scene-nav-pill:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .scene-nav-pill.active {
+            background: #ffffff;
+            color: #0f172a;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+            font-weight: 700;
+        }
+
+        .top-action-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bar-icon-btn {
+            height: 34px;
+            padding: 0 13px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            font-size: 12.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .bar-icon-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.03);
+        }
+
+        /* -------------------------------------------------------------
+           场景内的互动引导光标 (Aesthetic Pulsing Guided Badges)
+        ------------------------------------------------------------- */
+        .hotspot-interactive-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .guide-pin {
+            position: absolute;
+            pointer-events: auto;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px 6px 8px;
+            background: rgba(15, 23, 42, 0.88);
+            border: 1.5px solid #ffffff;
+            border-radius: 999px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 4px var(--pulse-glow);
+            color: #ffffff;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: pinFloat 3s ease-in-out infinite alternate;
+        }
+
+        .guide-pin:hover {
+            transform: scale(1.12) translateY(-3px);
+            background: var(--accent-amber);
+            border-color: #ffffff;
+            box-shadow: 0 12px 30px rgba(217, 119, 6, 0.6), 0 0 0 6px rgba(245, 158, 11, 0.5);
+            z-index: 25;
+        }
+
+        .guide-pin.completed {
+            opacity: 0.78;
+            background: rgba(30, 41, 59, 0.85);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .pin-step-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #f59e0b;
+            color: #0f172a;
+            font-size: 11.5px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .guide-pin.completed .pin-step-num {
+            background: #22c55e;
+            color: #ffffff;
+        }
+
+        .pin-label-title {
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes pinFloat {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+
+        /* -------------------------------------------------------------
+           标准 Galgame / ADV 对话框体系 (Visual Novel Dialogue System)
+           一个人说话时只有这个人！左侧独立真实头像框 + 姓名牌 + 打字机对白
+        ------------------------------------------------------------- */
+        .galgame-dialogue-window {
+            position: absolute;
+            bottom: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(94%, 980px);
+            min-height: 168px;
+            background: rgba(15, 23, 42, 0.88);
+            border: 1.5px solid rgba(255, 255, 255, 0.22);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            backdrop-filter: blur(20px);
+            z-index: 30;
+            display: flex;
+            padding: 16px 22px;
+            gap: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* 左侧独立角色头像立绘框 (Character Side Portrait) */
+        .galgame-portrait-box {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid #38bdf8;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            position: relative;
+            transition: all 0.3s ease;
+            align-self: center;
+        }
+
+        .galgame-portrait-box.theme-runtu {
+            border-color: #f59e0b;
+            box-shadow: 0 8px 24px rgba(217, 119, 6, 0.35);
+        }
+
+        .galgame-portrait-box.theme-xun {
+            border-color: #38bdf8;
+            box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35);
+        }
+
+        .galgame-portrait-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        /* 右侧对白区 */
+        .galgame-content-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        /* 顶部名字牌与系统栏 */
+        .galgame-top-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .galgame-namebox {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .galgame-namebox.theme-xun {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            border: 1px solid #38bdf8;
+        }
+
+        .galgame-namebox.theme-runtu {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border: 1px solid #fde68a;
+        }
+
+        /* 顶部小工具按键 (Log, Auto, 考点图谱) */
+        .galgame-quick-tools {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-pill-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #cbd5e1;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .tool-pill-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+        }
+
+        .tool-pill-btn.active {
+            background: #22c55e;
+            color: #ffffff;
+            border-color: #22c55e;
+        }
+
+        /* 正文对白展示区 */
+        .galgame-speech-body {
+            font-family: "Noto Serif SC", STSong, serif;
+            font-size: 16.5px;
+            line-height: 1.8;
+            color: #f8fafc;
+            min-height: 60px;
+            letter-spacing: 0.4px;
+            transition: opacity 0.2s ease;
+        }
+
+        .galgame-speech-body strong {
+            color: #fde047;
+            font-weight: 700;
+            background: rgba(253, 224, 71, 0.15);
+            padding: 1px 4px;
+            border-radius: 3px;
+        }
+
+        /* 底端 CTC (Click-To-Continue) 提示 */
+        .galgame-ctc-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 6px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.12);
+            padding-top: 6px;
+        }
+
+        .scene-status-hint {
+            font-size: 11.5px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .ctc-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #f59e0b;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            animation: ctcBounce 1.2s infinite ease-in-out;
+        }
+
+        @keyframes ctcBounce {
+            0%, 100% { transform: translateY(0); opacity: 0.7; }
+            50% { transform: translateY(-4px); opacity: 1; }
+        }
+
+        /* -------------------------------------------------------------
+           Galgame 分支选择悬浮面板 (Choice Selection Menu)
+        ------------------------------------------------------------- */
+        .galgame-choices-overlay {
+            position: absolute;
+            bottom: 205px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(90%, 780px);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 35;
+            pointer-events: auto;
+            animation: choicesSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes choicesSlideUp {
+            from { opacity: 0; transform: translate(-50%, 16px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .galgame-choice-btn {
+            background: rgba(15, 23, 42, 0.92);
+            border: 1.5px solid rgba(245, 158, 11, 0.5);
+            border-radius: 999px;
+            padding: 12px 24px;
+            color: #ffffff;
+            font-family: "Noto Serif SC", serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            backdrop-filter: blur(16px);
+            transition: all 0.25s ease;
+        }
+
+        .galgame-choice-btn:hover {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            border-color: #fde68a;
+            transform: scale(1.02) translateY(-2px);
+            box-shadow: 0 14px 36px rgba(217, 119, 6, 0.5);
+        }
+
+        /* -------------------------------------------------------------
+           历史回顾 (Log / Backlog) 浮层面板
+        ------------------------------------------------------------- */
+        .galgame-log-mask {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            z-index: 120;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .galgame-log-mask.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .galgame-log-panel {
+            width: min(92%, 760px);
+            height: 75vh;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 24px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .log-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding-bottom: 12px;
+        }
+
+        .log-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding-right: 8px;
+        }
+
+        .log-entry {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .log-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .log-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .log-name {
+            font-size: 13.5px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .log-name.xun { color: #38bdf8; }
+        .log-name.runtu { color: #f59e0b; }
+
+        .log-text {
+            font-family: "Noto Serif SC", STSong, serif;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #e2e8f0;
+        }
+
+        /* -------------------------------------------------------------
+           右侧滑出式：瑞士学术考点图谱抽屉 (Teacher's Swiss Deck Drawer)
+        /* -------------------------------------------------------------
+           8. 知识点与好感递进穿插研读页 (Intermission Stage)
+        ------------------------------------------------------------- */
+        .intermission-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.78);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 120;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .intermission-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .intermission-card {
+            width: min(96%, 1160px);
+            max-height: 90vh;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.2);
+            padding: 34px 44px;
+            overflow-y: auto;
+            transform: translateY(24px) scale(0.98);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            color: #0f172a;
+        }
+
+        .intermission-overlay.open .intermission-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .intermission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1.5px solid #e2e8f0;
+            padding-bottom: 16px;
+            gap: 16px;
+        }
+
+        .intermission-badge {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            color: #b45309;
+            background: #fef3c7;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .intermission-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: #0f172a;
+            line-height: 1.35;
+        }
+
+        .intermission-subtitle {
+            font-size: 13.5px;
+            color: #64748b;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .drawer-close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #64748b;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .drawer-close-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .intermission-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 28px;
+        }
+
+        /* 知识点精解区 */
+        .knowledge-section {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .section-header-pill {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .knowledge-unit {
+            background: #f8fafc;
+            border-left: 3.5px solid #0f172a;
+            border-radius: 0 12px 12px 0;
+            padding: 14px 18px;
+        }
+
+        .knowledge-unit.accent {
+            border-left-color: #b45309;
+            background: #fffbeb;
+        }
+
+        .unit-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: #b45309;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+        }
+
+        .unit-title {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .unit-desc {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #334155;
+        }
+
+        /* 好感递进与心理分析区 */
+        .relationship-section {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 20px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .affection-meter-box {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 14px 16px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .meter-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .meter-stars {
+            font-size: 14px;
+            color: #d97706;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .meter-percent {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: #047857;
+            background: #d1fae5;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .meter-track {
+            width: 100%;
+            height: 7px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .meter-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #f59e0b, #10b981);
+            border-radius: 999px;
+            transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .meter-status-title {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .rel-quote-card {
+            background: #ffffff;
+            border-left: 3px solid #0284c7;
+            padding: 10px 14px;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 12.5px;
+            line-height: 1.6;
+            color: #0369a1;
+            font-style: italic;
+        }
+
+        .rel-mechanism-text {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #334155;
+        }
+
+        /* 底部操作条 */
+        .intermission-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1.5px solid #e2e8f0;
+            padding-top: 16px;
+            gap: 16px;
+        }
+
+        .intermission-next-btn {
+            background: #0f172a;
+            color: #ffffff;
+            border: none;
+            padding: 13px 28px;
+            border-radius: 999px;
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25);
+        }
+
+        .intermission-next-btn:hover {
+            background: #1e293b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.35);
+        }
+
+        .intermission-prev-btn {
+            background: transparent;
+            color: #64748b;
+            border: 1px solid #cbd5e1;
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .intermission-prev-btn:hover {
+            background: #f8fafc;
+            color: #1e293b;
+            border-color: #94a3b8;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 900px) {
+            .top-floating-bar { padding: 0 12px; height: 48px; left: 12px; right: 12px; }
+            .scene-navigator { display: none; }
+            .galgame-dialogue-window { bottom: 12px; padding: 12px 14px; border-radius: 16px; width: 95%; gap: 12px; }
+            .galgame-portrait-box { width: 75px; height: 75px; }
+            .galgame-speech-body { font-size: 14px; min-height: 52px; }
+            .galgame-choices-overlay { bottom: 185px; width: 95%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-viewport">
+        <!-- 铺满全屏的温润手绘水彩场景 (100vw x 100vh) -->
+        <div class="scene-stage-canvas">
+            <img src="assets/runtu_keyframe.jpg" class="scene-bg-image" id="stage-bg-image" alt="全屏手绘水彩原画场景">
+        </div>
+
+        <!-- 场景内可点击互动引导光标图层 (Interactive Hotspots) -->
+        <div class="hotspot-interactive-layer" id="hotspots-container">
+            <!-- 动态生成当前场景的探索标记 -->
+        </div>
+
+        <!-- 顶部通栏悬浮导航 -->
+        <header class="top-floating-bar">
+            <div class="lesson-brand">
+                <span class="curriculum-tag">六年级上册 · 第八单元</span>
+                <span class="lesson-title-text">少年闰土</span>
+            </div>
+
+            <!-- 四大关键全景分镜切换 -->
+            <nav class="scene-navigator">
+                <button class="scene-nav-pill active" onclick="switchScene(0)">
+                    <span>🌕</span><span>月夜看瓜刺猹</span>
+                </button>
+                <button class="scene-nav-pill" onclick="switchScene(1)">
+                    <span>❄️</span><span>雪地捕鸟技巧</span>
+                </button>
+                <button class="scene-nav-pill" onclick="switchScene(2)">
+                    <span>🐚</span><span>海边拾贝跳鱼</span>
+                </button>
+                <button class="scene-nav-pill" onclick="switchScene(3)">
+                    <span>🌌</span><span>四角天空记忆</span>
+                </button>
+            </nav>
+
+            <div class="top-action-group">
+                <button class="bar-icon-btn" onclick="toggleAudio()" title="音效开关">
+                    <span id="sound-icon">🎵</span>
+                </button>
+                <button class="bar-icon-btn" onclick="showIntermission(currentSceneIndex)" title="研读本幕知识点与关系递进">
+                    <span>📖 本幕研读</span>
+                </button>
+                <button class="bar-icon-btn" onclick="toggleFullScreen()" title="全屏放映">
+                    <span>⛶</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Galgame 选项悬浮层 (仅在分支选择时浮现) -->
+        <div class="galgame-choices-overlay" id="choices-overlay" style="display: none;">
+            <!-- 动态生成选择卡片 -->
+        </div>
+
+        <!-- 底端 Galgame 对话框 (一个人说话时只有这个人！左侧专属头像框) -->
+        <div class="galgame-dialogue-window" id="dialogue-box" onclick="handleBoxClick()">
+            <!-- 左侧独立角色头像立绘框 -->
+            <div class="galgame-portrait-box theme-xun" id="portrait-box">
+                <img src="assets/avatar_xun.png" class="galgame-portrait-img" id="portrait-img" alt="角色头像">
+            </div>
+
+            <!-- 右侧名字牌与对白区 -->
+            <div class="galgame-content-panel">
+                <!-- 顶部元信息：姓名牌 + 快捷系统操作 -->
+                <div class="galgame-top-meta">
+                    <div class="galgame-namebox theme-xun" id="speaker-namebox">
+                        迅哥儿
+                    </div>
+                    <div class="galgame-quick-tools" onclick="event.stopPropagation()">
+                        <button class="tool-pill-btn" onclick="openLogModal()" title="查看历史台词 (L)">
+                            <span>📜</span><span>回顾</span>
+                        </button>
+                        <button class="tool-pill-btn" id="auto-btn" onclick="toggleAutoPlay()" title="自动播放对话">
+                            <span>⏩</span><span>自动</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 核心台词文本 -->
+                <div class="galgame-speech-body" id="speech-text">
+                    “你颈上套一个明晃晃的银项圈，这是何故？”
+                </div>
+
+                <!-- 底部 CTC 推进提示 -->
+                <div class="galgame-ctc-row">
+                    <span class="scene-status-hint" id="scene-status-hint">第一幕 · 月夜看瓜刺猹 · 银项圈 · 第 1/2 句</span>
+                    <div class="ctc-indicator" id="ctc-indicator">
+                        <span>点击继续</span>
+                        <span>▼</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 历史回顾 (Log) 模态弹窗 -->
+        <div class="galgame-log-mask" id="log-mask" onclick="closeLogModal(event)">
+            <div class="galgame-log-panel" onclick="event.stopPropagation()">
+                <div class="log-header">
+                    <div style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: #f59e0b;">
+                        BACKLOG // 剧情台词回顾
+                    </div>
+                    <button class="drawer-close-btn" onclick="closeLogModal()">✕</button>
+                </div>
+                <div class="log-list" id="log-list">
+                    <!-- 动态记录历史对话 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 知识点精解与好感递进穿插研读页 (Intermission Stage) -->
+        <div class="intermission-overlay" id="intermission-overlay">
+            <div class="intermission-card" onclick="event.stopPropagation()">
+                <div class="intermission-header">
+                    <div>
+                        <div class="intermission-badge" id="inter-badge">研读与递进 · 第一回目</div>
+                        <h2 class="intermission-title" id="inter-title">月夜看瓜刺猹：美学营构与阶层破冰</h2>
+                        <div class="intermission-subtitle" id="inter-subtitle">从色彩张力与民俗符码进入，解析深宅少爷与乡野少年的最初人格互信</div>
+                    </div>
+                    <button class="drawer-close-btn" onclick="closeIntermission()" title="关闭研读页">✕</button>
+                </div>
+
+                <div class="intermission-grid">
+                    <!-- 左栏：本幕知识点精解 (Textual & Aesthetic Rigor) -->
+                    <div class="knowledge-section">
+                        <div class="section-header-pill">
+                            <span>📖</span><span>本幕核心知识点精解 · 语文要素</span>
+                        </div>
+                        <div id="inter-knowledge-list" style="display: flex; flex-direction: column; gap: 12px;">
+                            <!-- 动态注入知识点 -->
+                        </div>
+                    </div>
+
+                    <!-- 右栏：二人关系演进与好感度阶梯 (Relational Dynamics) -->
+                    <div class="relationship-section">
+                        <div class="section-header-pill" style="color: #b45309;">
+                            <span>🤝</span><span>二人关系演化与好感递进</span>
+                        </div>
+
+                        <!-- 好感度仪表盘 -->
+                        <div class="affection-meter-box">
+                            <div class="meter-top-row">
+                                <span class="meter-stars" id="inter-stars">★☆☆☆</span>
+                                <span class="meter-percent" id="inter-percent">25%</span>
+                            </div>
+                            <div class="meter-track">
+                                <div class="meter-bar" id="inter-bar" style="width: 25%;"></div>
+                            </div>
+                            <div class="meter-status-title" id="inter-state-title">士绅少爷与生客之子 ➔ “只是不怕我”的同龄伙伴</div>
+                        </div>
+
+                        <!-- 课文证据心证 -->
+                        <div class="rel-quote-card" id="inter-quote">
+                            “我见人很怕羞，只是不怕我，没有旁人的时候，便和我说话，于是不到半日，我们便熟识了。”
+                        </div>
+
+                        <!-- 心理机制深度解析 -->
+                        <div class="rel-mechanism-text" id="inter-mech">
+                            深宅少爷迅哥儿自幼受宗法礼教规训，生活刻板封闭，对民间万象充满原始好奇；闰土虽“怕羞”，但在厨房这一去宗法化的平等空间里“只是不怕我”。银项圈与刺猹经历的讲述消解了陌生防备，二人确立起不依赖宗法礼序的同龄平等人格信任。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 底部操作导航条 -->
+                <div class="intermission-footer">
+                    <button class="intermission-prev-btn" id="inter-prev-btn">
+                        <span>↩️ 返回重温本幕场景</span>
+                    </button>
+                    <button class="intermission-next-btn" id="inter-next-btn">
+                        <span>踏雪启程 · 进入第二幕：雪地捕鸟技巧 ➔</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全场景数据库与互动引擎 -->
+    <script>
+        /* -------------------------------------------------------------
+           1. 四大关键分镜数据库 (标准 Galgame 剧本序列架构)
+           一个人说话时只有这个人！真实头像 + 经典原文
+        ------------------------------------------------------------- */
+        const AVATAR_XUN = 'assets/avatar_xun.png';
+        const AVATAR_RUNTU = 'assets/avatar_runtu.png';
+
+        const scenesData = [
+            {
+                id: 'zha',
+                title: '第一幕 · 月夜看瓜刺猹',
+                image: 'assets/runtu_keyframe.jpg',
+                camera: { scale: 1, x: '50%', y: '50%' },
+                pins: [
+                    {
+                        step: 1,
+                        label: '银项圈',
+                        x: '65%', y: '44%',
+                        zoom: { scale: 1.18, x: '65%', y: '44%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“你颈上套一个明晃晃的银项圈，这是何故？”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“我是<strong>闰月生的，五行缺土</strong>，所以我的父亲叫我闰土。他在神佛面前许下愿心，怕我死去，所以用<strong>圈子将我套住了</strong>。”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 追问：紫色的圆脸，头戴一顶小毡帽……',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“你正在我家厨房里，紫色的圆脸，头戴一顶小毡帽，见人很怕羞吗？”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>我见人很怕羞，只是不怕你，没有旁人的时候，便和你说话，于是不到半日，我们便熟识了。</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '🍉 探秘：走向沙地，看碧绿西瓜 ➔',
+                                action: 'nextPin'
+                            }
+                        ]
+                    },
+                    {
+                        step: 2,
+                        label: '碧绿西瓜',
+                        x: '18%', y: '64%',
+                        zoom: { scale: 1.22, x: '20%', y: '64%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“晚上我和爹管西瓜去——管贼吗？”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>不是。走路的人口渴了摘一个瓜吃，我们这里是不算偷的。要管的是獾猪，刺猬，猹。月亮地下，你听，啦啦地响了，猹在咬瓜了。你便捏了油蛉似的轻轻地走去……</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 惊叹：西瓜有这样危险的经历！',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“西瓜有这样危险的经历，我往常只以为他在水果店里出卖罢了。”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>月亮地下，你听，啦啦地响了，猹在咬瓜了。你便捏了油蛉似的轻轻地走去……</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '🗡️ 探寻：看看猹是怎么被刺的 ➔',
+                                action: 'nextPin'
+                            }
+                        ]
+                    },
+                    {
+                        step: 3,
+                        label: '伶俐刺猹',
+                        x: '35%', y: '62%',
+                        zoom: { scale: 1.25, x: '35%', y: '62%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“他不咬人吗？”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>有胡叉呢。走到了，看见猹了，你便刺。这畜生很伶俐，倒向你奔来，反从胯下窜了。它的皮毛是油一般的滑……</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 好奇：这所谓“猹”是怎样的一件东西？',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“我那时并不知道这所谓‘猹’的是怎么一件东西——只是无端地觉得状如小狗而很凶猛。”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>走到了，看见猹了，你便刺。这畜生很伶俐，倒向你奔来，反从胯下窜了。它的皮毛是油一般的滑……</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '🌕 仰望：深蓝天空与金黄圆月 ➔',
+                                action: 'nextPin'
+                            }
+                        ]
+                    },
+                    {
+                        step: 4,
+                        label: '金黄圆月',
+                        x: '26%', y: '20%',
+                        zoom: { scale: 1.15, x: '26%', y: '20%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“深蓝的天空里悬着一轮金黄的圆月，下面是海边的沙地，都种着一望无际的碧绿的西瓜。”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>其间有一个十一二岁的少年，项带银圈，手捏一柄钢叉，向一匹猹尽力地刺去。那猹却将身一扭，反从他的胯下逃走了。</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 齐诵：深蓝天空 · 金黄圆月 · 碧绿西瓜',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“深蓝的天空里悬着一轮金黄的圆月，下面是海边的沙地，都种着一望无际的碧绿的西瓜。”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>其间有一个十一二岁的少年，项带银圈，手捏一柄钢叉，向一匹猹尽力地刺去。那猹却将身一扭，反从他的胯下逃走了。</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '❄️ 完成月夜对话 · 进入第一回目研读与递进 ➔',
+                                action: 'intermission'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'bird',
+                title: '第二幕 · 雪地捕鸟技巧',
+                image: 'assets/runtu_snow_birds.jpg',
+                camera: { scale: 1, x: '50%', y: '50%' },
+                pins: [
+                    {
+                        step: 1,
+                        label: '扫地支匾',
+                        x: '42%', y: '48%',
+                        zoom: { scale: 1.18, x: '42%', y: '48%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“第二日，我便要他捕鸟。”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>这不能。须大雪下了才好。我们沙地上，下了雪，我扫出一块空地来，用短棒支起一个大竹匾，撒下秕谷……</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 细问：大雪下了，该怎样扫地支匾？',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“我们沙地上，下了雪，便怎样捕鸟？”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>我扫出一块空地来，用短棒支起一个大竹匾，撒下秕谷，看鸟雀来吃时，我远远地将缚在棒上的绳子只一拉，那鸟雀就罩在竹匾下了。</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '🌾 观察：看竹匾下的秕谷诱饵 ➔',
+                                action: 'nextPin'
+                            }
+                        ]
+                    },
+                    {
+                        step: 2,
+                        label: '撒下秕谷',
+                        x: '34%', y: '62%',
+                        zoom: { scale: 1.25, x: '34%', y: '62%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“在竹匾下面撒下秕谷，看鸟雀来吃么？”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>撒下秕谷，看鸟雀来吃时，我远远地将缚在棒上的绳子只一拉，那鸟雀就罩在竹匾下了。</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 盼望：我于是又很盼望下雪',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“我于是又很盼望下雪。”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>须大雪下了才好。看鸟雀来吃时，我远远地将缚在棒上的绳子只一拉，那鸟雀就罩在竹匾下了！</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '⚡ 敏捷：看远远拉绳的瞬间 ➔',
+                                action: 'nextPin'
+                            }
+                        ]
+                    },
+                    {
+                        step: 3,
+                        label: '绳子一拉',
+                        x: '76%', y: '52%',
+                        zoom: { scale: 1.18, x: '76%', y: '52%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“看鸟雀来吃时，远远地缚在棒上的绳子只一拉？”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>看鸟雀来吃时，我远远地将缚在棒上的绳子只一拉，那鸟雀就罩在竹匾下了。</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 赞叹：扫、支、撒、缚、拉，动词精密！',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“扫出空地，支起竹匾，撒下秕谷，缚绳一拉——那鸟雀就罩在竹匾下了！”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>扫出一块空地来，用短棒支起一个大竹匾，撒下秕谷，看鸟雀来吃时，我远远地将缚在棒上的绳子只一拉，那鸟雀就罩在竹匾下了。</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '🐦 识鸟：看看都捕到了什么鸟 ➔',
+                                action: 'nextPin'
+                            }
+                        ]
+                    },
+                    {
+                        step: 4,
+                        label: '各种鸟雀',
+                        x: '22%', y: '64%',
+                        zoom: { scale: 1.25, x: '22%', y: '64%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“罩在竹匾下的，都有些什么鸟雀？”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>什么都有：稻鸡，角鸡，鹁鸪，蓝背……</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 期待：我素不知道天下有这许多新鲜事！',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“我素不知道天下有这许多新鲜事，我于是又很盼望下雪。”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>什么都有：稻鸡，角鸡，鹁鸪，蓝背……</strong>我们沙地上，下了雪，什么鸟雀都有！”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '🐚 完成雪地对话 · 进入第二回目研读与递进 ➔',
+                                action: 'intermission'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'shell',
+                title: '第三幕 · 海边拾贝与潮汛跳鱼',
+                image: 'assets/runtu_beach_shells.jpg',
+                camera: { scale: 1, x: '50%', y: '50%' },
+                pins: [
+                    {
+                        step: 1,
+                        label: '拾五色贝',
+                        x: '22%', y: '62%',
+                        zoom: { scale: 1.22, x: '22%', y: '62%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“如今冬天太冷，夏天又当如何？”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>现在太冷，你夏天到我们这里来。我们日里到海边捡贝壳去，红的绿的都有，鬼见愁也有，观音手也有。晚上我和爹管西瓜去，你也去。</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 惊奇：海边有如许五色的贝壳！',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“海边有如许五色的贝壳！我素不知道天下有这许多新鲜事。”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>红的绿的都有，鬼见愁也有，观音手也有。晚上我和爹管西瓜去，你也去。</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '🪸 细看：探秘鬼见愁与观音手 ➔',
+                                action: 'nextPin'
+                            }
+                        ]
+                    },
+                    {
+                        step: 2,
+                        label: '鬼见愁与观音手',
+                        x: '52%', y: '44%',
+                        zoom: { scale: 1.28, x: '52%', y: '44%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“鬼见愁也有，观音手也有？”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>红的绿的都有，鬼见愁也有，观音手也有。</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 感叹：都是我往常的朋友所不知道的',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“海边有如许五色的贝壳，都是我往常的朋友所不知道的。”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>红的绿的都有，鬼见愁也有，观音手也有。</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '🐟 潮汛：去泥滩上看跳鱼儿 ➔',
+                                action: 'nextPin'
+                            }
+                        ]
+                    },
+                    {
+                        step: 3,
+                        label: '潮汛跳鱼儿',
+                        x: '86%', y: '54%',
+                        zoom: { scale: 1.3, x: '86%', y: '54%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“沙地里潮汛要来的时候，还有甚么新鲜事？”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>我们沙地里，潮汛要来的时候，就有许多跳鱼儿只是跳，都有青蛙似的两个脚……</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 追问：都有青蛙似的两个脚……',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“都有青蛙似的两个脚……这跳鱼儿只是跳？”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>我们沙地里，潮汛要来的时候，就有许多跳鱼儿只是跳，都有青蛙似的两个脚……</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '🌌 完成海边对话 · 进入第三回目研读与递进 ➔',
+                                action: 'intermission'
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 'sky',
+                title: '第四幕 · 高墙深院与四角天空',
+                image: 'assets/runtu_courtyard_sky.jpg',
+                camera: { scale: 1, x: '50%', y: '50%' },
+                pins: [
+                    {
+                        step: 1,
+                        label: '依依惜别',
+                        x: '82%', y: '60%',
+                        zoom: { scale: 1.2, x: '82%', y: '60%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“可惜正月过去了，闰土须回家去。我急得大哭，他也躲到厨房里，哭着不肯出门，但终于被他父亲带走了。”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>我后来托我父亲带给你一包贝壳和几支很好看的鸟毛……</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 追忆：我也曾送他一两次东西，但从此没有再见面',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“他后来还托他的父亲带给我一包贝壳和几支很好看的鸟毛，我也曾送他一两次东西，但从此没有再见面。”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>一包贝壳和几支很好看的鸟毛……</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '🏰 沉思：高墙深院上的四角天空 ➔',
+                                action: 'nextPin'
+                            }
+                        ]
+                    },
+                    {
+                        step: 2,
+                        label: '四角天空',
+                        x: '54%', y: '36%',
+                        zoom: { scale: 1.15, x: '54%', y: '36%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“阿！闰土的心里有无穷无尽的希奇的事，都是我往常的朋友所不知道的。他们不知道一些。”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>我们沙地上，下了雪捕鸟，日里拾五色贝壳，月夜管西瓜刺猹，潮汛看跳鱼儿……</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '💬 慨叹：只看见院子里高墙上的四角的天空',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“<strong>闰土在海边时，他们都和我一样只看见院子里高墙上的四角的天空。</strong>”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>阿！闰土的心里有无穷无尽的希奇的事，都是我往常的朋友所不知道的。</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '✨ 凝望：心中永远的月夜少年 ➔',
+                                action: 'nextPin'
+                            }
+                        ]
+                    },
+                    {
+                        step: 3,
+                        label: '月夜永恒',
+                        x: '34%', y: '24%',
+                        zoom: { scale: 1.2, x: '34%', y: '24%' },
+                        script: [
+                            {
+                                speaker: '迅哥儿',
+                                avatar: AVATAR_XUN,
+                                theme: 'xun',
+                                text: '“深蓝的天空里悬着一轮金黄的圆月，下面是海边的沙地，都种着一望无际的碧绿的西瓜。”'
+                            },
+                            {
+                                speaker: '少年闰土',
+                                avatar: AVATAR_RUNTU,
+                                theme: 'runtu',
+                                text: '“<strong>其间有一个十一二岁的少年，项带银圈，手捏一柄钢叉，向一匹猹尽力地刺去。那猹却将身一扭，反从他的胯下逃走了。</strong>”'
+                            }
+                        ],
+                        branches: [
+                            {
+                                label: '🌟 齐诵：深蓝天空 · 金黄圆月 · 碧绿西瓜',
+                                followUp: [
+                                    {
+                                        speaker: '迅哥儿',
+                                        avatar: AVATAR_XUN,
+                                        theme: 'xun',
+                                        text: '“深蓝的天空里悬着一轮金黄的圆月，下面是海边的沙地，都种着一望无际的碧绿的西瓜。”'
+                                    },
+                                    {
+                                        speaker: '少年闰土',
+                                        avatar: AVATAR_RUNTU,
+                                        theme: 'runtu',
+                                        text: '“<strong>其间有一个十一二岁的少年，项带银圈，手捏一柄钢叉，向一匹猹尽力地刺去。那猹却将身一扭，反从他的胯下逃走了。</strong>”'
+                                    }
+                                ]
+                            },
+                            {
+                                label: '📑 完成终幕对话 · 进入全课终局研读与精神升华 ➔',
+                                action: 'intermission'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        /* -------------------------------------------------------------
+           2. 穿插研读与好感递进知识数据库 (Intermissions Dataset)
+           依据学术写作规范：严密论证链、命题清晰、杜绝空洞套话
+        ------------------------------------------------------------- */
+        const intermissionsData = [
+            {
+                stageIndex: 0,
+                badge: '研读与递进 · 第一回目',
+                title: '月夜看瓜刺猹：美学营构与阶层破冰',
+                subTitle: '由色彩张力与民俗符码进入，解析深宅少爷与乡野少年的最初人格互信',
+                affectionLevel: '★☆☆☆',
+                affectionPercent: '25%',
+                relationshipState: '士绅少爷与生客之子 ➔ “只是不怕我”的同龄伙伴',
+                knowledgePoints: [
+                    {
+                        tag: '写景色彩与动静互衬 · 背诵首段',
+                        title: '深蓝天空 + 金黄圆月 + 碧绿西瓜',
+                        text: '“深蓝”、“金黄”、“碧绿”三原色浓墨重彩，构筑出纯净澄澈的天然意境；静谧辽阔的沙地背景与少年敏捷刺猹、猹扭身反窜构成动静极致反差，景中有人，极富戏剧张力。'
+                    },
+                    {
+                        tag: '外貌刻画与民俗符码 · 核心密码',
+                        title: '紫圆脸 + 小毡帽 + 明晃晃银项圈',
+                        text: '紫圆脸是海风日晒留下的健康体色；小毡帽是绍兴水乡劳动人民的地域文化标志；银项圈则具象化了“五行缺土、神佛锁命”的民间传统信仰，寄托着父亲祈求平安长命的淳厚父爱。'
+                    }
+                ],
+                relationshipAnalysis: {
+                    coreText: '“我见人很怕羞，只是不怕我，没有旁人的时候，便和我说话，于是不到半日，我们便熟识了。”',
+                    mechanism: '深宅少爷迅哥儿自幼受宗法礼教规训，生活刻板封闭，对民间万象充满原始好奇；闰土虽“怕羞”，但在厨房这一去宗法化的平等空间里“只是不怕我”。银项圈与刺猹经历的讲述消解了陌生防备，二人确立起不依赖宗法礼序的同龄平等人格信任。'
+                },
+                nextActionText: '踏雪启程 · 进入第二幕：雪地捕鸟技巧 ➔',
+                nextSceneIdx: 1
+            },
+            {
+                stageIndex: 1,
+                badge: '研读与递进 · 第二回目',
+                title: '雪地捕鸟技巧：动词精密链与经验崇拜',
+                subTitle: '从动词连续时序到知识权力倒置，深宅少爷对乡野实践智慧的由衷敬服',
+                affectionLevel: '★★☆☆',
+                affectionPercent: '50%',
+                relationshipState: '平等玩伴 ➔ 经验权威与精神导师',
+                knowledgePoints: [
+                    {
+                        tag: '动作描写精密时序链 · 课后小练笔',
+                        title: '扫 ➔ 支 ➔ 撒 ➔ 缚 ➔ 拉',
+                        text: '文本严格按动作先后次序连续运用五个精准及物动词：扫除积雪 ➔ 支起竹匾 ➔ 撒下秕谷 ➔ 绳缚短棒 ➔ 见鸟拉绳。一气呵成，高度凝练地呈现出沙地传统捕鸟机械装置的巧思与狩猎经验。'
+                    },
+                    {
+                        tag: '物种多态性与认知拓展 · 博物经验',
+                        title: '稻鸡、角鸡、鹁鸪、蓝背……',
+                        text: '以短促列举呈现出城里少爷闻所未闻的乡土鸟雀生态，打破四角书斋的狭隘常识，赋予自然生命以繁复多样的生动感，有力支撑了下文“希奇的事”的心理积淀。'
+                    }
+                ],
+                relationshipAnalysis: {
+                    coreText: '“我于是又很盼望下雪。”',
+                    mechanism: '在捕鸟技艺的传授语境中，传统的阶层权力结构发生彻底反转：少爷迅哥儿沦为知识与行动经验上的匮乏者与受教者，闰土则成为自由天地与高超技艺的布道者。“我于是又很盼望下雪”的心理独白，表征着迅哥儿对闰土的经验世界产生了深度的敬畏、向往与情感依赖。'
+                },
+                nextActionText: '赴海启程 · 进入第三幕：海边拾贝与潮汛跳鱼 ➔',
+                nextSceneIdx: 2
+            },
+            {
+                stageIndex: 2,
+                badge: '研读与递进 · 第三回目',
+                title: '海边拾贝跳鱼：广袤自然与灵魂知交',
+                subTitle: '从陆地到海洋的视野扩张，打破阶层樊篱共享自足生命宇宙',
+                affectionLevel: '★★★☆',
+                affectionPercent: '75%',
+                relationshipState: '技艺传授 ➔ 倾囊相赠的大海知己',
+                knowledgePoints: [
+                    {
+                        tag: '海洋生态意象与奇物特写 · 视野扩张',
+                        title: '五色贝壳 · 鬼见愁 · 观音手 · 跳鱼儿',
+                        text: '红绿五色贝壳、具象命名的鬼见愁与观音手，以及“生青蛙两脚”在泥滩跳跃的跳鱼儿，将文学视野由陆地推展向辽阔浩瀚的东海之滨，构建出独立于封建体制之外充满蓬勃生命律动的自然画卷。'
+                    },
+                    {
+                        tag: '劳作体验的审美化转换 · 生命哲学',
+                        title: '白天拾贝 · 晚上管瓜',
+                        text: '日常劳作在闰土的叙事中脱离了生存苦役的沉重感，转化为伴随潮汛涨落、月下守望的诗性探险体验，展现出人与自然共生的高贵生命品格。'
+                    }
+                ],
+                relationshipAnalysis: {
+                    coreText: '“现在太冷，你夏天到我们这里来……晚上我和爹管西瓜去，你也去。”',
+                    mechanism: '闰土主动向迅哥儿发出“夏天到我们这里来”的长远期许，标志着二人交往彻底突破了年节祭祀的短暂雇佣时限，结为心灵契合的生活知己。闰土将自己所拥有的整座海洋宇宙倾囊交付，迅哥儿从中获得精神启蒙，二人好感度在此达到文本叙事的高潮。'
+                },
+                nextActionText: '归院沉思 · 进入第四幕：高墙深院与四角天空 ➔',
+                nextSceneIdx: 3
+            },
+            {
+                stageIndex: 3,
+                badge: '研读与递进 · 终局回响',
+                title: '高墙深院与四角天空：空间隐喻与精神图腾',
+                subTitle: '封建规训反省、离别撕裂剧痛与永恒不灭的自由象征',
+                affectionLevel: '★★★★',
+                affectionPercent: '100%',
+                relationshipState: '现实永别 ➔ 心中照耀一生的自由之光',
+                knowledgePoints: [
+                    {
+                        tag: '空间拓扑隐喻 · 课后思考题第2题',
+                        title: '四角的天空 vs 一望无际的沙地',
+                        text: '“只看见院子里高墙上的四角的天空”，以残缺逼仄的空间隐喻封建家族制度对儿童心智的幽闭与异化；与闰土所代表的“一望无际的碧绿沙地”构成严峻的精神对峙。'
+                    },
+                    {
+                        tag: '阶层认知反讽 · 知识观解构',
+                        title: '无穷无尽的希奇事 vs 他们不知道一些',
+                        text: '深宅少爷群体的“不知道一些”，深刻反讽了封建正统教育的苍白贫困；而底层劳动少年心中的“无穷无尽的希奇的事”，彰显了生活实践对书斋虚妄教条的彻底碾压。'
+                    }
+                ],
+                relationshipAnalysis: {
+                    coreText: '“我也曾送他一两次东西，但从此没有再见面。”',
+                    mechanism: '正月终了的急哭与躲藏，显影出阶级社会现实力量碾碎童年纯真的悲剧宿命。虽然“从此没有再见面”，但一包贝壳、几支鸟毛以及那轮金黄圆月下的捏叉少年，已化作迅哥儿精神深处永不磨灭的自由图腾，成为鲁迅终其一生反抗沉沦、呼唤人性的力量源泉。'
+                },
+                nextActionText: '🔄 循序重温全剧流转',
+                nextSceneIdx: 0
+            }
+        ];
+
+        /* -------------------------------------------------------------
+           2. Galgame 核心状态机与控制器 (State Machine & Controller)
+        ------------------------------------------------------------- */
+        let currentSceneIndex = 0;
+        let currentPinIndex = 0;
+        let currentScriptArray = [];
+        let scriptPointer = 0;
+        let isTyping = false;
+        let typingTimeoutId = null;
+        let isAutoPlay = false;
+        let autoPlayTimerId = null;
+        let dialogueLog = [];
+        let isAudioOn = true;
+
+        /* 纯合成音效引擎 */
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSoundTone(freq, dur, type = 'sine', gainVal = 0.25) {
+            if (!isAudioOn) return;
+            initAudio();
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, now);
+            gain.gain.setValueAtTime(gainVal, now);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + dur);
+        }
+
+        function playChime() { playSoundTone(880, 1.2, 'sine', 0.25); }
+        function playStepSound() { playSoundTone(587.33, 0.12, 'sine', 0.18); }
+        function playBranchSound() { playSoundTone(659.25, 0.25, 'triangle', 0.2); }
+
+        function toggleAudio() {
+            isAudioOn = !isAudioOn;
+            document.getElementById('sound-icon').textContent = isAudioOn ? '🎵' : '🔇';
+            if (isAudioOn) playChime();
+        }
+
+        /* -------------------------------------------------------------
+           3. 场景与分镜镜头控制
+        ------------------------------------------------------------- */
+        function renderScene(sceneIdx) {
+            currentSceneIndex = sceneIdx;
+            currentPinIndex = 0;
+            const scene = scenesData[sceneIdx];
+
+            // 切换背景大图
+            const bgImg = document.getElementById('stage-bg-image');
+            bgImg.style.opacity = '0.35';
+            setTimeout(() => {
+                bgImg.src = scene.image;
+                bgImg.style.opacity = '1';
+                bgImg.style.transform = `scale(${scene.camera.scale})`;
+            }, 180);
+
+            // 更新导航 Pill 高亮
+            const pills = document.querySelectorAll('.scene-nav-pill');
+            pills.forEach((p, idx) => {
+                p.classList.toggle('active', idx === sceneIdx);
+            });
+
+            // 渲染该场景的交互标识 Pin
+            renderHotspotPins(scene);
+
+            // 激活该场景的第一个探索点
+            startPinDialogue(0);
+        }
+
+        function renderHotspotPins(scene) {
+            const container = document.getElementById('hotspots-container');
+            container.innerHTML = '';
+
+            scene.pins.forEach((pin, pIdx) => {
+                const pinEl = document.createElement('div');
+                pinEl.className = `guide-pin ${pIdx === 0 ? 'active' : ''}`;
+                pinEl.style.left = pin.x;
+                pinEl.style.top = pin.y;
+                pinEl.id = `pin-${pIdx}`;
+                pinEl.onclick = (e) => {
+                    e.stopPropagation();
+                    startPinDialogue(pIdx);
+                };
+
+                pinEl.innerHTML = `
+                    <div class="pin-step-num">${pin.step}</div>
+                    <span class="pin-label-title">${pin.label}</span>
+                `;
+                container.appendChild(pinEl);
+            });
+        }
+
+        /* -------------------------------------------------------------
+           4. Galgame 对白流转系统 (一个人说话时只有这个人！)
+        ------------------------------------------------------------- */
+        function startPinDialogue(pIdx) {
+            const scene = scenesData[currentSceneIndex];
+            if (!scene.pins[pIdx]) return;
+            currentPinIndex = pIdx;
+            const pin = scene.pins[pIdx];
+
+            playStepSound();
+            hideChoices();
+
+            // 更新 Pin 激活态
+            scene.pins.forEach((_, idx) => {
+                const el = document.getElementById(`pin-${idx}`);
+                if (el) {
+                    el.classList.toggle('active', idx === pIdx);
+                    if (idx < pIdx) el.classList.add('completed');
+                }
+            });
+
+            // 镜头平滑缩放聚焦
+            const bgImg = document.getElementById('stage-bg-image');
+            if (pin.zoom) {
+                bgImg.style.transformOrigin = `${pin.zoom.x} ${pin.zoom.y}`;
+                bgImg.style.transform = `scale(${pin.zoom.scale})`;
+            }
+
+            // 加载主线剧本
+            currentScriptArray = [...pin.script];
+            scriptPointer = 0;
+            displayCurrentLine();
+        }
+
+        function displayCurrentLine() {
+            if (scriptPointer >= currentScriptArray.length) {
+                // 当前对白结束，展现分支选择
+                showChoices();
+                return;
+            }
+
+            const line = currentScriptArray[scriptPointer];
+            hideChoices();
+            playStepSound();
+
+            // 存入历史记录
+            dialogueLog.push({
+                speaker: line.speaker,
+                avatar: line.avatar,
+                theme: line.theme,
+                text: line.text
+            });
+
+            // 更新头像与姓名牌 (一个人说话时只有这个人！)
+            const portraitBox = document.getElementById('portrait-box');
+            const portraitImg = document.getElementById('portrait-img');
+            const namebox = document.getElementById('speaker-namebox');
+            const statusHint = document.getElementById('scene-status-hint');
+
+            portraitBox.className = `galgame-portrait-box theme-${line.theme}`;
+            portraitImg.src = line.avatar;
+            namebox.className = `galgame-namebox theme-${line.theme}`;
+            namebox.textContent = line.speaker;
+
+            const scene = scenesData[currentSceneIndex];
+            const pin = scene.pins[currentPinIndex];
+            statusHint.textContent = `${scene.title} · ${pin.label} · 第 ${scriptPointer + 1}/${currentScriptArray.length} 句`;
+
+            // 打字机流式展示文本
+            typewriterText(line.text);
+        }
+
+        function typewriterText(fullHtml) {
+            clearTimeout(typingTimeoutId);
+            const textBox = document.getElementById('speech-text');
+            const ctc = document.getElementById('ctc-indicator');
+
+            ctc.style.display = 'none';
+            textBox.innerHTML = '';
+            isTyping = true;
+
+            // 提取纯文本长度，支持 HTML 标签
+            let charIndex = 0;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = fullHtml;
+            const plainText = tempDiv.innerText;
+
+            function step() {
+                if (!isTyping) return;
+                charIndex++;
+                if (charIndex < plainText.length) {
+                    textBox.innerText = plainText.substring(0, charIndex);
+                    typingTimeoutId = setTimeout(step, 24);
+                } else {
+                    finishTyping(fullHtml);
+                }
+            }
+            step();
+        }
+
+        function finishTyping(fullHtml) {
+            clearTimeout(typingTimeoutId);
+            isTyping = false;
+            const textBox = document.getElementById('speech-text');
+            const ctc = document.getElementById('ctc-indicator');
+
+            textBox.innerHTML = fullHtml;
+            ctc.style.display = 'flex';
+
+            // 若开启自动播放，延迟自动推进
+            if (isAutoPlay) {
+                clearTimeout(autoPlayTimerId);
+                autoPlayTimerId = setTimeout(() => {
+                    if (isAutoPlay) handleBoxClick();
+                }, 3200);
+            }
+        }
+
+        function handleBoxClick() {
+            if (isTyping) {
+                // 如果正在打字，直接瞬间展示全文 (Skip animation)
+                const line = currentScriptArray[scriptPointer];
+                finishTyping(line.text);
+                return;
+            }
+
+            // 如果打字已完成，推进下一句
+            scriptPointer++;
+            if (scriptPointer < currentScriptArray.length) {
+                displayCurrentLine();
+            } else {
+                // 展现分支选项
+                showChoices();
+            }
+        }
+
+        /* -------------------------------------------------------------
+           5. Galgame 分支选择系统 (Choices Overlay)
+        ------------------------------------------------------------- */
+        function showChoices() {
+            const overlay = document.getElementById('choices-overlay');
+            const ctc = document.getElementById('ctc-indicator');
+            ctc.style.display = 'none';
+
+            const scene = scenesData[currentSceneIndex];
+            const pin = scene.pins[currentPinIndex];
+            if (!pin.branches || pin.branches.length === 0) return;
+
+            overlay.innerHTML = '';
+            overlay.style.display = 'flex';
+            playBranchSound();
+
+            pin.branches.forEach((branch, bIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'galgame-choice-btn';
+                btn.innerHTML = `
+                    <span>${branch.label}</span>
+                    <span style="font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: #fde68a;">[ 按 ${bIdx + 1} 键 ] ➔</span>
+                `;
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    selectBranch(bIdx);
+                };
+                overlay.appendChild(btn);
+            });
+        }
+
+        function hideChoices() {
+            const overlay = document.getElementById('choices-overlay');
+            overlay.style.display = 'none';
+        }
+
+        function selectBranch(bIdx) {
+            const scene = scenesData[currentSceneIndex];
+            const pin = scene.pins[currentPinIndex];
+            const branch = pin.branches[bIdx];
+            if (!branch) return;
+
+            hideChoices();
+            playStepSound();
+
+            if (branch.followUp) {
+                // 加载追问台词流
+                currentScriptArray = [...branch.followUp];
+                scriptPointer = 0;
+                displayCurrentLine();
+            } else if (branch.action === 'nextPin') {
+                advanceToNextPin();
+            } else if (branch.action === 'intermission') {
+                showIntermission(currentSceneIndex);
+            } else if (branch.action === 'nextScene') {
+                showIntermission(currentSceneIndex);
+            }
+        }
+
+        function advanceToNextPin() {
+            const scene = scenesData[currentSceneIndex];
+            if (currentPinIndex < scene.pins.length - 1) {
+                startPinDialogue(currentPinIndex + 1);
+            } else {
+                showIntermission(currentSceneIndex);
+            }
+        }
+
+        function switchScene(sceneIdx) {
+            closeIntermission();
+            playChime();
+            renderScene(sceneIdx);
+        }
+
+        /* -------------------------------------------------------------
+           6. 自动播放控制 (Auto-Play)
+        ------------------------------------------------------------- */
+        function toggleAutoPlay() {
+            isAutoPlay = !isAutoPlay;
+            const btn = document.getElementById('auto-btn');
+            btn.classList.toggle('active', isAutoPlay);
+            if (isAutoPlay) {
+                btn.innerHTML = '<span>⏸️</span><span>自动中</span>';
+                if (!isTyping) handleBoxClick();
+            } else {
+                btn.innerHTML = '<span>⏩</span><span>自动</span>';
+                clearTimeout(autoPlayTimerId);
+            }
+        }
+
+        /* -------------------------------------------------------------
+           7. 历史记录系统 (Log / Backlog)
+        ------------------------------------------------------------- */
+        function openLogModal() {
+            playStepSound();
+            const mask = document.getElementById('log-mask');
+            const list = document.getElementById('log-list');
+            list.innerHTML = '';
+
+            dialogueLog.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'log-entry';
+                row.innerHTML = `
+                    <div class="log-avatar">
+                        <img src="${item.avatar}" alt="${item.speaker}">
+                    </div>
+                    <div style="flex: 1;">
+                        <div class="log-name ${item.theme}">${item.speaker}</div>
+                        <div class="log-text">${item.text}</div>
+                    </div>
+                `;
+                list.appendChild(row);
+            });
+
+            mask.classList.add('open');
+            list.scrollTop = list.scrollHeight;
+        }
+
+        function closeLogModal(e) {
+            document.getElementById('log-mask').classList.remove('open');
+        }
+
+        /* -------------------------------------------------------------
+           8. 知识点与好感递进穿插研读系统 (Intermission Controller)
+        ------------------------------------------------------------- */
+        let isIntermissionOpen = false;
+
+        function showIntermission(stageIdx) {
+            playBranchSound();
+            const overlay = document.getElementById('intermission-overlay');
+            const data = intermissionsData[stageIdx];
+            if (!data) return;
+
+            isIntermissionOpen = true;
+
+            // 标题与回目标识
+            document.getElementById('inter-badge').textContent = data.badge;
+            document.getElementById('inter-title').textContent = data.title;
+            document.getElementById('inter-subtitle').textContent = data.subTitle;
+
+            // 好感度阶梯与心理状态
+            document.getElementById('inter-stars').textContent = data.affectionLevel;
+            document.getElementById('inter-percent').textContent = data.affectionPercent;
+            document.getElementById('inter-bar').style.width = data.affectionPercent;
+            document.getElementById('inter-state-title').textContent = data.relationshipState;
+            document.getElementById('inter-quote').textContent = data.relationshipAnalysis.coreText;
+            document.getElementById('inter-mech').textContent = data.relationshipAnalysis.mechanism;
+
+            // 知识点列表渲染
+            const kList = document.getElementById('inter-knowledge-list');
+            kList.innerHTML = '';
+            data.knowledgePoints.forEach((kp, idx) => {
+                const div = document.createElement('div');
+                div.className = `knowledge-unit ${idx === 0 ? 'accent' : ''}`;
+                div.innerHTML = `
+                    <div class="unit-tag">${kp.tag}</div>
+                    <div class="unit-title">${kp.title}</div>
+                    <div class="unit-desc">${kp.text}</div>
+                `;
+                kList.appendChild(div);
+            });
+
+            // 导航按钮
+            const nextBtn = document.getElementById('inter-next-btn');
+            nextBtn.innerHTML = `<span>${data.nextActionText}</span><span style="font-size: 11px; opacity: 0.75; font-family: monospace;">[ Space / Enter ]</span>`;
+            nextBtn.onclick = () => {
+                closeIntermissionAndGo(data.nextSceneIdx);
+            };
+
+            const prevBtn = document.getElementById('inter-prev-btn');
+            prevBtn.onclick = () => {
+                closeIntermission();
+            };
+
+            overlay.classList.add('open');
+        }
+
+        function closeIntermission() {
+            const overlay = document.getElementById('intermission-overlay');
+            if (overlay) overlay.classList.remove('open');
+            isIntermissionOpen = false;
+        }
+
+        function closeIntermissionAndGo(nextSceneIdx) {
+            closeIntermission();
+            switchScene(nextSceneIdx);
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        /* -------------------------------------------------------------
+           9. 键盘操控快捷键 (Space/Enter 推进, 1/2 选支线, L 打开 Log, Esc 关闭)
+        ------------------------------------------------------------- */
+        window.addEventListener('keydown', (e) => {
+            const logMask = document.getElementById('log-mask');
+
+            if (logMask.classList.contains('open')) {
+                if (e.key === 'Escape' || e.key === 'l' || e.key === 'L') closeLogModal();
+                return;
+            }
+
+            if (isIntermissionOpen) {
+                if (e.key === 'Escape') {
+                    closeIntermission();
+                    return;
+                }
+                if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    const data = intermissionsData[currentSceneIndex];
+                    if (data) {
+                        closeIntermissionAndGo(data.nextSceneIdx);
+                    }
+                    return;
+                }
+                return;
+            }
+
+            if (e.key === 'l' || e.key === 'L') {
+                openLogModal();
+                return;
+            }
+
+            const choicesOverlay = document.getElementById('choices-overlay');
+            if (choicesOverlay.style.display === 'flex') {
+                if (e.key === '1') selectBranch(0);
+                if (e.key === '2') selectBranch(1);
+                return;
+            }
+
+            if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                handleBoxClick();
+            }
+        });
+
+        // 初始化加载第一幕
+        window.addEventListener('DOMContentLoaded', () => {
+            renderScene(0);
+        });
+    </script>
+</body>
+</html>
